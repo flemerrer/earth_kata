@@ -11,5 +11,5 @@ def two_points_distance_calculation(coordinates_x, coordinates_y):
 
     return math.sqrt(distance_squared)
 
-def find_max_distance():
+def find_max_distance(distances):
     pass
