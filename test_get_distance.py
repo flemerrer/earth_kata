@@ -10,7 +10,7 @@ def test_two_points_distance_calculation_should_return_the_hypotenuse_value_of_x
     assert round(result, 3) == round(14.1421, 3)
     
 def test_find_max_distance_should_return_the_greatest_value_from_input_distances():
-    distances = (14.142, 56.987, 100.265, 5.120)
+    distances = (14.142, 56.987, 100.256, 5.120)
 
     result = find_max_distance(distances)
 
