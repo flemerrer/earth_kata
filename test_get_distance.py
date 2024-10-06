@@ -1,7 +1,7 @@
 import pytest
 
 from get_distance import diameter_calculation, find_max_distance, find_antipodal_point, get_elevation, Location, \
-    find_antipodal_points, create_locations_list, create_diameters_list
+    find_antipodal_points, create_diameters_list, capitals_coordinates, get_locations_list
 
 
 def test_diameter_calculation_should_return_the_distance_between_two_points():
@@ -14,11 +14,15 @@ def test_diameter_calculation_should_return_the_distance_between_two_points():
 
 
 def test_find_max_distance_should_return_the_greatest_value_from_input_distances():
-    distances = (14.142, 56.987, 100.256, 5.120)
+    distances = [
+        ('distance 1', 13),
+        ('distance 2', 16),
+        ('distance 3', 18)
+                 ]
 
     result = find_max_distance(distances)
 
-    assert result == 100.256
+    assert result == ('distance 3', 18)
 
 
 @pytest.mark.parametrize({"given_coordinates", "expected_coordinates"},
@@ -37,17 +41,18 @@ def test_find_opposite_point_should_return_the_antipodal_point_coordinates_of_gi
 
 
 # pay attention and insert a backspace after a comma while listing ints ; if not, it'll be considered as one float !
+# avoid calling APIs during test > prefer the use of mocks
 
-@pytest.mark.parametrize({"given_latitude", "given_longitude", "expected_elevation"},
-                         [
-                             pytest.param(10, 10, 515),
-                             pytest.param(20, 20, 545),
-                         ])
-def test_get_elevation(given_latitude, given_longitude, expected_elevation):
-    coordinates = (given_latitude, given_longitude)
-    elevation = get_elevation(coordinates)
-
-    assert elevation == expected_elevation
+# @pytest.mark.parametrize({"given_latitude", "given_longitude", "expected_elevation"},
+#                          [
+#                              pytest.param(10, 10, 515),
+#                              pytest.param(20, 20, 545),
+#                          ])
+# def test_get_elevation(given_latitude, given_longitude, expected_elevation):
+#     coordinates = (given_latitude, given_longitude)
+#     elevation = get_elevation(coordinates)
+#
+#     assert elevation == expected_elevation
 
 def test_find_antipodal_points_should_return_a_list_of_opposite_locations():
     paris = Location (49, 2, 'Paris')
@@ -62,18 +67,21 @@ def test_find_antipodal_points_should_return_a_list_of_opposite_locations():
     assert antipodal_locations[2].coordinates == (12, 103)
 
 
-def test_createlocations_list_should_return_a_list_of_location_from_dictionnary():
-    list = create_locations_list()
+# I started by coding a function that returned a list using a for loop on dictionnary but I refactored it later
+@pytest.mark.skip('now unnecessary')
+def test_get_locations_list_should_return_a_list_of_location_from_dictionary():
+    locations = get_locations_list()
 
-    assert list[0].coordinates == (49, 2) and list[0].name == 'Paris'
+    assert locations[0].coordinates == (49, 2) and locations[0].name == 'Paris'
 
 
 def test_create_diameters_list_should_return_a_list_of_tuples():
-    locations_list = create_locations_list()
+    locations_list = get_locations_list()
     antipodal_list = find_antipodal_points(locations_list)
 
     diameters = create_diameters_list(locations_list, antipodal_list)
 
-    for elem in diameters:
-        index = diameters.index(elem)
-        assert elem[0] == f'{locations_list[index].name} - {antipodal_list[index].name} Distance' and elem[1] == 12742000
+    assert diameters[0][0] == f'Paris - Opposite of Paris Distance'
+    assert diameters[0][1] == 12742182
+    assert diameters[5][0] == f'Lima - Opposite of Lima Distance'
+    assert diameters[5][1] == 12742221

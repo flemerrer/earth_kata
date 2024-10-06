@@ -15,29 +15,20 @@ class Location:
 
 
 capitals_coordinates= {
-    'Paris': Location (49, 2, 'Paris'),
-    'London': Location(51, -0, 'London'),
-    'New York': Location(41, -74, 'New York'),
-    'Mexico': Location(19, -99, 'Mexico'),
+    'Paris': Location (49, 2, 'Paris', 182),
+    'London': Location(51, -0, 'London', ),
+    'New York': Location(41, -74, 'New York', ),
+    'Mexico': Location(19, -99, 'Mexico', ),
     'Rio de Janeiro': Location(-23, -43, 'Rio de Janeiro'),
-    'Lima': Location(-12, -77, 'Lima'),
+    'Lima': Location(-12, -77, 'Lima', 221),
     'New Delhi': Location(28, 77, 'New Delhi'),
     'Beijin': Location(22, 113, 'Beijin'),
     'Canberra': Location(-35, 149, 'Canberra'),
 }
 
 
-def create_locations_list ():
-
-    locations_list = []
-
-    for elem in capitals_coordinates:
-        # capitals_coordinates[elem].set_elevation(random()*10000)
-        locations_list.append(capitals_coordinates[elem])
-        # print(vars(capitals_coordinates[elem]))
-
-    return locations_list
-
+def get_locations_list():
+    return list(capitals_coordinates.values())
 
 def find_antipodal_points(locations_list):
 
@@ -60,6 +51,7 @@ def create_diameters_list(locations, antipodals):
         diameters.append((f'{elem.name} - {antipodals[i].name} Distance', diameter))
 
     return diameters
+
 
 def find_antipodal_point(coordinates):
     latitude = coordinates[0]
@@ -89,11 +81,11 @@ def diameter_calculation(elevation_a, elevation_b, earth_diameter=12742000):
 
 def find_max_distance(diameters_list):
     max_distance = 0
-    index = -1
+    i = -1
     for elem in diameters_list:
         if elem[1] > max_distance:
             max_distance = elem[1]
-            index = diameters_list.index(elem)
+            i = diameters_list.index(elem)
 
-    return diameters_list[index]
+    return diameters_list[i]
 
