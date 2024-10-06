@@ -1,15 +1,30 @@
 
 import math
 
-def two_points_distance_calculation(coordinates_x, coordinates_y):
-    xa = coordinates_x[0]
-    ya = coordinates_x[1]
-    xb = coordinates_y[0]
-    yb = coordinates_y[1]
+# earth_diameter = 12742 km
 
-    distance_squared = (xa - xb)**2 + (ya - yb)**2
+def find_antipodal_point(coordinates):
 
-    return math.sqrt(distance_squared)
+    latitude = coordinates[0]
+
+    if coordinates[1] > 0:
+        longitude = 180 - coordinates[1]
+    else:
+        longitude = 180 - abs(coordinates[1])
+        longitude = -longitude
+
+    return -latitude, -longitude
+
+def get_altitude(coordinates):
+    pass
+
+
+def two_points_distance_calculation(coordinates_a, coordinates_b, earth_diameter = 12742):
+
+    altitude_difference = coordinates_a[2] + coordinates_b[2]
+
+    return earth_diameter + altitude_difference
+
 
 def find_max_distance(distances):
     max_distance = 0
@@ -18,7 +33,9 @@ def find_max_distance(distances):
             max_distance = elem
     return max_distance
 
-    #todo :refactor functions and tests in order to accept 3D coordinates
+    #todo:
+    # solve: how do I check that a line pass through the 0;0 point ?
+    # refactor functions and tests in order to accept 3D coordinates
     # create or import dataset for reference points across the globe
     # look for existing dataset that might give a diametrically opposite point on earth for any given coordinate
-    # solve : how do I check that 2 coordinates are on the same diameter ? they must pass through 0 ; how to check for that ?
+
