@@ -34,7 +34,7 @@ def create_locations_list ():
     for elem in capitals_coordinates:
         # capitals_coordinates[elem].set_elevation(random()*10000)
         locations_list.append(capitals_coordinates[elem])
-        print(vars(capitals_coordinates[elem]))
+        # print(vars(capitals_coordinates[elem]))
 
     return locations_list
 
@@ -87,10 +87,13 @@ def diameter_calculation(elevation_a, elevation_b, earth_diameter=12742000):
     return earth_diameter + elevation_difference
 
 
-def find_max_distance(distances):
+def find_max_distance(diameters_list):
     max_distance = 0
-    for elem in distances:
-        if elem > max_distance:
-            max_distance = elem
-    return max_distance
+    index = -1
+    for elem in diameters_list:
+        if elem[1] > max_distance:
+            max_distance = elem[1]
+            index = diameters_list.index(elem)
+
+    return diameters_list[index]
 
