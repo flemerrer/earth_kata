@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 
@@ -56,6 +58,18 @@ def get_elevation(coordinates):
 
     return response['results'][0]['elevation']
 
+def import_equatorial_points():
+    URL = 'https://api.open-elevation.com/api/v1/lookup?locations='
+    parameters = ''
+
+    for i in range(0, 179):
+        parameters += f'0,{i}|'
+    parameters += '0,180'
+
+    equator_points = requests.get(f'{URL}{parameters}').json()
+
+    with open("equator_points_list.json", "w") as outfile:
+        json.dump(equator_points, outfile)
 
 # earth_diameter is about 12742 km
 def diameter_calculation(elevation_a, elevation_b, earth_diameter=12742000):
@@ -74,3 +88,4 @@ def find_max_distance(diameters_list):
             i = diameters_list.index(elem)
 
     return diameters_list[i]
+

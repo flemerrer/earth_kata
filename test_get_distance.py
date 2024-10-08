@@ -122,3 +122,4 @@ def test_create_diameters_list_should_return_a_list_of_tuples():
     assert diameters[0][1] == 12742182
     assert diameters[5][0] == f'Lima <-> Opposite of Lima Distance'
     assert diameters[5][1] == 12742221
+
