@@ -1,12 +1,9 @@
 import pytest
-import requests, requests_mock
 
 from get_distance import diameter_calculation, find_max_distance, find_antipodal_point, get_elevation, Location, \
     find_antipodal_points, create_diameters_list, get_capitals_list
 
-
 # Reminder about tests : they must be simple to avoid them being false / wrong, and because they are a form of documentation. They must show how functions work ; not be another implementation of tested functions. If they have the same complexity level as the tested function, it is not right.
-
 # To help achieving that, use hard coded values in test. And like in any docu!entation, choose values to test that are not abstract. It facilitates comprehension (Alice and Bob > A & B)
 
 

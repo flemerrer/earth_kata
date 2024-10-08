@@ -1,6 +1,4 @@
-import json
-
-import requests
+import json, requests
 
 
 class Location:
@@ -15,6 +13,11 @@ class Location:
 
 def get_capitals_list(dict):
     return list(dict.values())
+
+
+def get_points_list_from_file(path='points_list.json'):
+    with open(path) as file:
+        return json.load(file)
 
 
 def find_antipodal_points(locations_list):
@@ -58,6 +61,7 @@ def get_elevation(coordinates):
 
     return response['results'][0]['elevation']
 
+
 def import_equatorial_points():
     URL = 'https://api.open-elevation.com/api/v1/lookup?locations='
     parameters = ''
@@ -68,8 +72,12 @@ def import_equatorial_points():
 
     equator_points = requests.get(f'{URL}{parameters}').json()
 
-    with open("equator_points_list.json", "w") as outfile:
+    with open("points_list.json", "w") as outfile:
         json.dump(equator_points, outfile)
+
+    #todo: add exception handling ?
+
+    return True
 
 # earth_diameter is about 12742 km
 def diameter_calculation(elevation_a, elevation_b, earth_diameter=12742000):
@@ -88,4 +96,3 @@ def find_max_distance(diameters_list):
             i = diameters_list.index(elem)
 
     return diameters_list[i]
-
