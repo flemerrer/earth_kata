@@ -1,4 +1,5 @@
 import pytest
+import requests, requests_mock
 
 from get_distance import diameter_calculation, find_max_distance, find_antipodal_point, get_elevation, Location, \
     find_antipodal_points, create_diameters_list, get_capitals_list
@@ -59,6 +60,25 @@ def test_find_opposite_point_should_return_the_antipodal_point_coordinates_of_gi
 #
 #     assert elevation == expected_elevation
 
+#@requests_mock.Mocker()
+def test_get_elevation_should_return_a_valid_json(mocker):
+    test_coordinates = (10, 10)
+    test_data = {"results":[{"latitude":10.0,"longitude":10.0,"elevation":515.0}]}
+
+    mock_response = mocker.MagicMock()
+    mock_response.json.return_value = test_data
+
+    mocker.patch("requests.get", return_value=mock_response)
+
+    result = get_elevation(test_coordinates)
+
+    # version that tests the whole data response
+    # assert result == test_data
+    # assert type(result) == dict
+    # assert result["results"][0]["elevation"] == 515
+
+    assert result == 515
+
 def test_find_antipodal_points_should_return_a_list_of_opposite_locations():
     paris = Location(49, 2, 'Paris')
     camberra = Location(-35, 149, 'Canberra')
@@ -98,7 +118,7 @@ def test_create_diameters_list_should_return_a_list_of_tuples():
 
     diameters = create_diameters_list(locations_list, antipodal_list)
 
-    assert diameters[0][0] == f'Paris - Opposite of Paris Distance'
+    assert diameters[0][0] == f'Paris <-> Opposite of Paris Distance'
     assert diameters[0][1] == 12742182
-    assert diameters[5][0] == f'Lima - Opposite of Lima Distance'
+    assert diameters[5][0] == f'Lima <-> Opposite of Lima Distance'
     assert diameters[5][1] == 12742221
