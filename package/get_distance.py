@@ -3,37 +3,38 @@ import json, requests
 from package.models import Couple, Location
 
 
-def get_points_dict_as_list(dictionary):
+def get_points_list_from_dict(dictionary):
     return list(dictionary.values())
 
 
-def get_points_list_from_file(path='points_list.json'):
+def get_points_list_from_result_list(dictionary):
+    locations_list = []
+
+    for elem in list(dictionary.values())[0]:
+        locations_list.append(Location(elem['latitude'], elem['longitude'], elem['elevation'], elem['name']))
+
+    return locations_list
+
+def load_json(path):
     with open(path) as file:
         return json.load(file)
 
 
-# def find_antipodal_points(locations_list):
-#     antipodal_points_list = []
-#
-#     for location in locations_list:
-#         coordinates = find_antipodal_point(location)
-#         name = ''
-#         if location.name is not None:
-#             name = location.name
-#         antipodal_points_list.append(Location(coordinates.latitude, coordinates.longitude, 0, name))
-#
-#     return antipodal_points_list
+def get_couples_list_from_json(path='../resources/points_list.json'):
+    data = get_points_list_from_result_list(load_json(path))
+
+    return create_point_and_antipodal_couple(data)
 
 
-#todo: use reverse geocoding to get the name of the found coordinates
-def create_point_and_antipodal_couples(locations_list):
+# todo: use reverse geocoding to get the name of the found coordinates
+def create_point_and_antipodal_couple(locations_list):
     couples_list = []
 
     for location in locations_list:
         antipodal = find_antipodal_point(location)
         couple = Couple(location, antipodal)
         if location.name is None:
-            couple.name = f'{couple.point.get_coordinates} to {couple.antipodal_point.get_coordinates()} ditance'
+            couple.name = f'{couple.point.get_coordinates} to {couple.antipodal_point.get_coordinates()} distance'
         else:
             couple.name = f'{location.name} to its antipodal point distance'
         couples_list.append(couple)
@@ -58,7 +59,10 @@ def get_elevation(location):
     return response['results'][0]['elevation']
 
 
-#todo: add exception handling ?
+# def set_elevation
+
+
+# todo: add exception handling ?
 def import_equatorial_points():
     URL = 'https://api.open-elevation.com/api/v1/lookup?locations='
     parameters = ''
@@ -69,10 +73,11 @@ def import_equatorial_points():
 
     equator_points = requests.get(f'{URL}{parameters}').json()
 
-    with open("../points_list.json", "w") as outfile:
+    with open("../resources/points_list.json", "w") as outfile:
         json.dump(equator_points, outfile)
 
     return True
+
 
 def find_max_distance(couples_list):
     max_distance = 0

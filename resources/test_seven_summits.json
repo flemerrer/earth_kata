@@ -1,0 +1,46 @@
+{
+  "results": [
+    {
+      "name": "Everest",
+      "latitude": 27.9880556,
+      "longitude": 86.92500000000001,
+      "elevation": 8771.0
+    },
+    {
+      "name": "Aconcagua",
+      "latitude": -32.6531111,
+      "longitude": -70.01205555555556,
+      "elevation": 6891.0
+    },
+    {
+      "name": "Denali",
+      "latitude": 63.0694444,
+      "longitude": -151.0075,
+      "elevation": 6190.0
+    },
+    {
+      "name": "Kilimanjaro",
+      "latitude": -3.0758333,
+      "longitude": 37.35333333333333,
+      "elevation": 5882.0
+    },
+    {
+      "name": "Vinson",
+      "latitude": -78.5255556,
+      "longitude": -85.61722222222221,
+      "elevation": 4892.0
+    },
+    {
+      "name": "Elbrus",
+      "latitude": 43.355,
+      "longitude": 42.439166666666665,
+      "elevation": 5524.0
+    },
+    {
+      "name": "Mount Wilhelm",
+      "latitude": -5.8,
+      "longitude": 145.03333333333333,
+      "elevation": 3953.0
+    }
+  ]
+}
