@@ -29,3 +29,12 @@ Objective of the kata : find the greatest distance between two points diametrica
   - Man-machine interface
   - Parametrize search
 
+#### Highest summits on Earth (7 summits)
+
+* Everest : 27.9880556,86.92500000000001
+* Aconcagua : -32.6531111,-70.01205555555556
+* Denali : 63.0694444,-151.0075
+* Kilimanjaro : -3.0758333,37.35333333333333
+* Vinson : -78.5255556,-85.61722222222221
+* Elbrus : 43.355,42.439166666666665
+* Mount Wilhelm : -5.8,145.03333333333333

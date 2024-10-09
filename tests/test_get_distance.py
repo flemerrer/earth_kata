@@ -1,0 +1,107 @@
+import pytest
+
+from package.data import capitals_coordinates
+from package.get_distance import find_max_distance, find_antipodal_point, get_elevation, Location, create_point_and_antipodal_couples, get_points_dict_as_list, Couple
+
+
+# Reminder about tests : they must be simple to avoid them being false / wrong, and because they are a form of documentation. They must show how functions work ; not be another implementation of tested functions. If they have the same complexity level as the tested function, it is not right.
+# To help achieving that, use hard coded values in test. And like in any docu!entation, choose values to test that are not abstract. It facilitates comprehension (Alice and Bob > A & B)
+
+
+# @pytest.mark.parametrize({"couple", "expected_distance"},
+#                          [
+#                              {Couple(Location(10, 10, 515), Location(-10, -170)), 12742515},
+#                              {Couple(Location(-20, -20, 545), Location(20, 160)), 12742545},
+#                          ])
+def test_diameter_calculation_should_return_the_distance_between_two_points():
+    couple = Couple(Location(10, 10, 515), Location(-10, -170))
+    expected_distance = 12742515
+
+    assert couple.return_distance() == expected_distance
+
+
+def test_find_max_distance_should_return_the_greatest_value_from_input_distances():
+    locations_list = get_points_dict_as_list()
+    couples_list = create_point_and_antipodal_couples(locations_list)
+
+    result = find_max_distance(couples_list)
+
+    assert result.return_distance() == 12742221
+
+@pytest.mark.parametrize({"given_location", "expected_antipodal"},
+                         [
+                             {Location(40, -5), Location(-40, 175)},
+                             {Location(49, 7), Location(-49, -173)},
+                             {Location(-32, 52), Location(32, -128)},
+                             {Location(75, 140), Location(-75, -40)},
+                             {Location(-25, -50), Location(25, 130)},
+                         ])
+def test_find_antipodal_point_should_return_the_antipodal_point_coordinates(given_location, expected_antipodal):
+
+    assert find_antipodal_point(given_location).latitude == expected_antipodal.latitude
+    assert find_antipodal_point(given_location).longitude == expected_antipodal.longitude
+
+
+# pay attention and insert a backspace after a comma while listing ints ; if not, it'll be considered as one float !
+# avoid calling APIs during test > prefer the use of mocks
+
+# @pytest.mark.parametrize({"given_latitude", "given_longitude", "expected_elevation"},
+#                          [
+#                              pytest.param(10, 10, 515),
+#                              pytest.param(20, 20, 545),
+#                          ])
+# def test_get_elevation(given_latitude, given_longitude, expected_elevation):
+#     coordinates = (given_latitude, given_longitude)
+#     elevation = get_elevation(coordinates)
+#
+#     assert elevation == expected_elevation
+
+#@requests_mock.Mocker()
+def test_get_elevation_should_return_a_valid_json(mocker):
+    test_coordinates = Location(10, 10)
+    test_data = {"results":[{"latitude":10.0,"longitude":10.0,"elevation":515.0}]}
+
+    mock_response = mocker.MagicMock()
+    mock_response.json.return_value = test_data
+
+    mocker.patch("requests.get", return_value=mock_response)
+
+    # version that tests the whole data response
+    # assert result == test_data
+    # assert type(result) == dict
+    # assert result["results"][0]["elevation"] == 515
+
+    assert get_elevation(test_coordinates) == 515
+
+def test_find_antipodal_points_should_return_a_list_of_opposite_locations():
+    paris = Location(49, 2, 0, 'Paris')
+    camberra = Location(-35, 149, 0, 'Canberra')
+    lima = Location(-12, -77, 0, 'Lima')
+    locations_list = (paris, camberra, lima)
+
+    couples_list = create_point_and_antipodal_couples(locations_list)
+
+    assert couples_list[0].antipodal_point.get_coordinates() == (-49, -178)
+    assert couples_list[1].antipodal_point.get_coordinates() == (35, -31)
+    assert couples_list[2].antipodal_point.get_coordinates() == (12, 103)
+
+
+# I started by coding a function that returned a list using a for loop on dictionary but I refactored it later
+@pytest.mark.skip('now unnecessary')
+def test_get_dict_as_list_should_return_a_list_of_locations_from_dictionary():
+    locations = get_points_dict_as_list(capitals_coordinates)
+
+    assert locations[0].coordinates == (49, 2) and locations[0].name == 'Paris'
+
+
+def test_create_point_and_antipodal_couples_should_return_a_list_of_couple_instances_containing_two_locations_with_names():
+
+    locations_list = get_points_dict_as_list(capitals_coordinates)
+    expected_name_1 = locations_list[0].name
+    expected_name_2 = locations_list[8].name
+    couples_list = create_point_and_antipodal_couples(locations_list)
+
+    assert couples_list[0].point.name == expected_name_1
+    assert couples_list[0].name == f'{expected_name_1} to its antipodal point distance'
+    assert couples_list[8].point.name == expected_name_2
+    assert couples_list[8].name == f'{expected_name_2} to its antipodal point distance'
