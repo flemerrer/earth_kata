@@ -1,8 +1,9 @@
 import pytest
 
-from package.get_distance import find_max_distance, find_antipodal_point, get_elevation, Location, Couple, \
+from package.get_distance import get_max_distance_from_couples_list, find_antipodal_point, get_elevation, Location, \
+    Couple, \
     get_couples_list_from_json, \
-    get_points_list_from_dict, create_point_and_antipodal_couple
+    get_points_list_from_dict, create_point_and_antipodal_couple, get_summits_max_elevation
 
 
 # Reminder about tests : they must be simple to avoid them being false / wrong, and because they are a form of documentation. They must show how functions work ; not be another implementation of tested functions. If they have the same complexity level as the tested function, it is not right.
@@ -23,7 +24,7 @@ def test_diameter_calculation_should_return_the_distance_between_two_points():
 
 def test_find_max_distance_should_return_the_greatest_value_from_distances_listed_in_test_file():
 
-    couple = find_max_distance(get_couples_list_from_json('../resources/seven_summits.json'))
+    couple = get_summits_max_elevation()
 
     assert couple.name is not None
     assert couple.return_distance() == 12750771.0
