@@ -5,6 +5,16 @@ Objective of the kata : find the greatest distance between two points diametrica
 
 ### Notes & Ideas
 
+#### Approach
+TDD etc. learning python blabla
+
+#### Todo
+- Fix import of elevation 
+- Add summits data to pool of data used in find_max_diam
+- refactor functions for optimization and elegance
+- add a function to use reverse geocoding via an API call to name points / couple
+
+#### To improve the project
 - Take into account the fact that Earth isn't perfectly flat. Diameter is bigger at the Equator (about +42km)
 - Optimize the algorithm that finds the most probable candidates and filter the list to only test those and not ALL 
   the points on Earth

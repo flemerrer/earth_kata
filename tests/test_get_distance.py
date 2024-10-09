@@ -1,9 +1,10 @@
 import pytest
 
-from package.get_distance import get_max_distance_from_couples_list, find_antipodal_point, get_elevation, Location, \
+from package.get_distance import find_antipodal_point,  Location, \
     Couple, \
     get_couples_list_from_json, \
-    get_points_list_from_dict, create_point_and_antipodal_couple, get_summits_max_elevation
+    get_points_list_from_dict, create_point_and_antipodal_couple, get_summits_max_elevation, find_max_diameter
+from package.import_data import get_elevation
 
 
 # Reminder about tests : they must be simple to avoid them being false / wrong, and because they are a form of documentation. They must show how functions work ; not be another implementation of tested functions. If they have the same complexity level as the tested function, it is not right.
@@ -36,6 +37,7 @@ def test_find_max_distance_should_return_the_greatest_value_from_distances_liste
                              {Location(-32, 52), Location(32, -128)},
                              {Location(75, 140), Location(-75, -40)},
                              {Location(-25, -50), Location(25, 130)},
+                             {Location(-5.8, 145), Location(5.8, -35)},
                          ])
 def test_find_antipodal_point_should_return_the_antipodal_point_coordinates(given_location, expected_antipodal):
 
@@ -43,19 +45,17 @@ def test_find_antipodal_point_should_return_the_antipodal_point_coordinates(give
     assert find_antipodal_point(given_location).longitude == expected_antipodal.longitude
 
 
-# pay attention and insert a backspace after a comma while listing ints ; if not, it'll be considered as one float !
 # avoid calling APIs during test > prefer the use of mocks
+@pytest.mark.parametrize({"given_location", "expected_elevation"},
+                         [
+                             pytest.param(Location(10, 10), 515),
+                             pytest.param(Location(20, 20), 545),
+                         ])
+def test_get_elevation(given_location, expected_elevation):
+    coordinates = (given_location)
+    elevation = get_elevation(coordinates)
 
-# @pytest.mark.parametrize({"given_latitude", "given_longitude", "expected_elevation"},
-#                          [
-#                              pytest.param(10, 10, 515),
-#                              pytest.param(20, 20, 545),
-#                          ])
-# def test_get_elevation(given_latitude, given_longitude, expected_elevation):
-#     coordinates = (given_latitude, given_longitude)
-#     elevation = get_elevation(coordinates)
-#
-#     assert elevation == expected_elevation
+    assert elevation == expected_elevation
 
 #@requests_mock.Mocker()
 def test_get_elevation_should_return_a_valid_json(mocker):
@@ -118,3 +118,11 @@ def test_get_couples_list_from_json_should_return_a_list_of_couple_objects():
 
     assert isinstance(result[1], Couple)
     assert isinstance(result[1].point, Location)
+
+def test_find_max_diameter_should_return_the_couple_with_biggest_distance_from_a_given_list():
+    result = find_max_diameter()
+
+    assert isinstance(result, Couple)
+    # assert result.point.get_coordinates() == 0
+    # assert result.antipodal_point.get_coordinates() == 0
+    # assert result.return_distance() == 0
