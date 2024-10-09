@@ -9,8 +9,7 @@ Objective of the kata : find the greatest distance between two points diametrica
 TDD etc. learning python blabla
 
 #### Todo
-- Fix import of elevation 
-- Add summits data to pool of data used in find_max_diam
+- Fix import of elevation
 - refactor functions for optimization and elegance
 - add a function to use reverse geocoding via an API call to name points / couple
 
