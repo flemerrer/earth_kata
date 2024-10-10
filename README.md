@@ -1,7 +1,7 @@
 ### Intro
 
-Objective of the kata : find the greatest distance between two points diametrically opposed on Earth that pass through
-the center of the Earth.
+Objective of the kata : find the greatest distance between two points diametrically opposed on Earth that pass 
+through the center of the Earth.
 
 ### Notes & Ideas
 
@@ -45,6 +45,7 @@ More thoughts about how I could improve the project below.
       found (https://nominatim.openstreetmap.org/reverse?lat=[value]&lon=[value]&[params])
     - Man-machine interface
     - Parametrize search
+- Look for a Postgres dataset of the Earth 
 
 #### Highest summits on Earth (7 summits)
 

@@ -1,5 +1,8 @@
 import json, requests
 from random import random
+from time import sleep
+
+from requests import Request
 
 
 def get_elevation(location):
@@ -11,27 +14,29 @@ def get_elevation(location):
 
 
 # todo: add exception handling ?
-# fixme: doesn't work for now
-def get_all_points_as_json():
+def get_all_points_as_json(pace):
     URL = 'https://api.open-elevation.com/api/v1/lookup?locations='
-    temp_data =''
+    json_coordinates = []
 
-    for i in range(0, 90, 1):
+    with open('../resources/points_list.json', 'w') as file:
+        file.write("")
+
+    for i in range(0, 90, pace):
         parameters = ''
-        for j in range(0, 180, 1):
+        for j in range(0, 180, pace):
             parameters += f'{i},{j}|'
-        print(parameters)
         request = requests.get(f'{URL}{parameters}')
-        print(request.status_code)
-        temp_data += request.text
-        print(temp_data)
+        # print(request.status_code)
+        response = request.json()
+        json_coordinates += response['results']
+        with open('../resources/points_list.json', 'a') as file:
+            file.write(f'{"{"}"results": ')
+            json.dump(json_coordinates, file)
+            file.write(f'{"}"}')
+        sleep(1)
 
-    json_coordinates = json.loads(temp_data.text)
 
-    with open('../resources/points_list.json', 'a') as file:
-        json.dump(json_coordinates, file)
-
-def import_mock_elevation_data_as_json():
+def generate_mock_elevation_data_as_json():
 
     dict_list = []
 
@@ -54,14 +59,3 @@ def import_mock_elevation_data_as_json():
 
     with open("../resources/mock_data.json", "w") as outfile:
         outfile.write(json_obj)
-
-    # for i in range(0, 90, 1):
-    #     for j in range(0, 180, 1):
-    #         parameters += f'{"{"}"latitude":{i}, "longitude":{j}, "elevation": {random()*1000}{"}"},'
-    #
-    # data += f'{parameters}]{"}"}'
-
-    # with open('../resources/mock_data.json', 'w') as file:
-    #     json.dump(json, file, indent=4, sort_keys=True)
-
-import_mock_elevation_data_as_json()

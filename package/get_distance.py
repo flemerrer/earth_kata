@@ -98,9 +98,15 @@ def find_max_diameter(path="../resources/points_list.json"):
     return get_max_distance_from_couples_list(couples_list)
 
 
-# import_all_points_as_json()
 max_distance_couple = find_max_diameter("../resources/mock_data.json")
 print(
     f"\nThe maximum distance found from the diameters created from the given list is "
     f"{max_distance_couple.return_distance() / 1000} km. \nIt is the distance from {max_distance_couple.name}"
 )
+
+# fixme: erreur d'encodage du json importé depuis l'API
+# max_distance_couple = find_max_diameter()
+# print(
+#     f"\nThe maximum distance found from the diameters created from the given list is "
+#     f"{max_distance_couple.return_distance() / 1000} km. \nIt is the distance from {max_distance_couple.name}"
+# )
