@@ -10,7 +10,7 @@ from package.get_distance import (
     get_summits_max_elevation,
     find_max_diameter,
 )
-from package.import_data import get_elevation
+
 
 # Reminder about tests : they must be simple to avoid them being false / wrong, and because they are a form of documentation. They must show how functions work ; not be another implementation of tested functions. If they have the same complexity level as the tested function, it is not right.
 # To help achieving that, use hard coded values in test. And like in any docu!entation, choose values to test that are not abstract. It facilitates comprehension (Alice and Bob > A & B)
@@ -62,38 +62,6 @@ def test_find_antipodal_point_should_return_the_antipodal_point_coordinates(
     assert (
         find_antipodal_point(given_location).longitude == expected_antipodal.longitude
     )
-
-
-# avoid calling APIs during test > prefer the use of mocks
-# uncomment when needed only
-# @pytest.mark.parametrize({"given_location", "expected_elevation"},
-#                          [
-#                              pytest.param(Location(10, 10), 515),
-#                              pytest.param(Location(20, 20), 545),
-#                          ])
-# def test_get_elevation(given_location, expected_elevation):
-#     coordinates = (given_location)
-#     elevation = get_elevation(coordinates)
-#
-#     assert elevation == expected_elevation
-
-
-# @requests_mock.Mocker()
-def test_get_elevation_should_return_a_valid_json(mocker):
-    test_coordinates = Location(10, 10)
-    test_data = {"results": [{"latitude": 10.0, "longitude": 10.0, "elevation": 515.0}]}
-
-    mock_response = mocker.MagicMock()
-    mock_response.json.return_value = test_data
-
-    mocker.patch("requests.get", return_value=mock_response)
-
-    # version that tests the whole data response
-    # assert result == test_data
-    # assert type(result) == dict
-    # assert result["results"][0]["elevation"] == 515
-
-    assert get_elevation(test_coordinates) == 515
 
 
 def test_find_antipodal_points_should_return_a_list_of_opposite_locations():

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "earth-kata"
+version = "0.1.0"
+description = ""
+authors = ["flemerrer <francois.lemerrer@protonmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+pylint = "*"
+pytest = "^8.3.3"
+pytest-mock = "*"
+requests = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

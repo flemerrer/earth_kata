@@ -81,9 +81,9 @@ def get_max_distance_from_couples_list(couples_list):
 # todo: write a reverse geocoding function to print the name of the place that's found with the algorithm
 
 
-def find_max_diameter():
+def find_max_diameter(path="../resources/points_list.json"):
     max_summit_elevation = get_summits_max_elevation().return_distance()
-    couples_list = get_couples_list_from_json() + get_couples_list_from_json(
+    couples_list = get_couples_list_from_json(path) + get_couples_list_from_json(
         "../resources/seven_summits.json"
     )
 
@@ -99,7 +99,7 @@ def find_max_diameter():
 
 
 # import_all_points_as_json()
-max_distance_couple = find_max_diameter()
+max_distance_couple = find_max_diameter("../resources/mock_data.json")
 print(
     f"\nThe maximum distance found from the diameters created from the given list is "
     f"{max_distance_couple.return_distance() / 1000} km. \nIt is the distance from {max_distance_couple.name}"
